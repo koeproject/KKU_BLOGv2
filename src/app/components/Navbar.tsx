@@ -15,10 +15,10 @@ function Navbar() {
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-6">
           <Link href="/post" className="text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white transition">
-            📄 โพสต์
+            📄 Post
           </Link>
           <Link href="/profile" className="text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white transition">
-            👤 โปรไฟล์
+            👤 Profile
           </Link>
         </div>
       </div>

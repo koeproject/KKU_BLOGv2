@@ -1,3 +1,5 @@
+"use client";
+
 import { Navbar } from "@/app/components/Navbar";
 import { Categories } from "@/app/components/Categories";
 import { PostList } from "@/app/components/PostList";
