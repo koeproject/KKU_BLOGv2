@@ -6,8 +6,10 @@ export async function GET(
     { params }: { params: { id: string } }
   ) {
     try {
+      const {id} = await params;
       const post = await prisma.post.findUnique({
-        where: { id: Number(params.id) }
+        where: { id: Number(id) },
+        
       });
   
       return Response.json(post);

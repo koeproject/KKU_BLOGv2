@@ -6,12 +6,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // ✅ Use `useRouter`
 
 export default function PostList() {
-  interface Post {
-    id: number;
-    image: string;
-    title: string;
-    like: number;
-  }
 
   const [posts, setPosts] = useState<Post[]>([]);
   const router = useRouter(); // ✅ Initialize router inside the component

@@ -1,4 +1,4 @@
-import NextAuth from 'next-auth'
+import NextAuth from 'next-auth/next'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt'
@@ -48,14 +48,26 @@ export const authOptions = {
     jwt: async ({ token, user }: { token: any, user?: any }) => {
       if (user) {
         token.id = user.id
+        token.username = user.username
         token.role = user.role
+        token.bio = user.bio
+        token.profilePicture = user.profilePicture
+        token.contact = user.contact
+        token.email = user.email
+       
       }
       return token
     },
     session: async ({ session, token }: { session: any, token: any }) => {
       if (session.user) {
         session.user.id = token.id
+        session.user.username = token.username
         session.user.role = token.role
+        session.user.bio = token.bio
+        session.user.profilePicture = token.profilePicture
+        session.user.contact = token.contact
+        session.user.email = token.email
+
       }
       return session
     }

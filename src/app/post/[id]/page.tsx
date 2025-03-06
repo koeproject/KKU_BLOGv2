@@ -2,30 +2,30 @@
 
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation"; 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Navbar from "@/app/components/Navbar";
+import Comments from "@/app/components/Comments";
 
-// Define Post interface
 
 
 export default function PostPage({ params }: { params: { id: string } }) {
-  const [post, setPost] = useState<Post | null>(null); // ✅ Store a single post, not an array
+  const [post, setPost] = useState<Post | null>(null); // ✅
   const router = useRouter();
-  const { id } = useParams();
+  const { id } = params;
 
   useEffect(() => {
-      fetchPost(params.id);
+      fetchPost(id);
   }, [id]);
 
   const fetchPost = async (id: string) => {
     try {
       const res = await axios.get(`/api/posts/${id}`);
-      setPost(res.data); // ✅ Set a single post
+      setPost(res.data);
     } catch (error) {
       console.error("Error fetching post:", error);
-      router.push("/"); // Redirect if post is not found
+      router.push("/");
     }
   };
 
@@ -34,7 +34,10 @@ export default function PostPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div>
+      <Navbar />
+      
+    <div className="max-w-3xl mx-auto p-6 pt-20">
       <h1 className="text-3xl font-bold">{post.title}</h1>
       <p className="text-gray-400">{post.content}</p>
       <Image
@@ -47,10 +50,10 @@ export default function PostPage({ params }: { params: { id: string } }) {
       <p className="mt-6 text-lg">{post.content}</p>
       <div className="mt-6 flex justify-between text-gray-400">
         <span>❤️ {post.like} ถูกใจ</span>
-        <Link href="/" className="text-blue-400 hover:underline">
-          🔙 กลับไปหน้าโพสต์
-        </Link>
+        
       </div>
+      <Comments postId={params.id} />  
+    </div>
     </div>
   );
 }

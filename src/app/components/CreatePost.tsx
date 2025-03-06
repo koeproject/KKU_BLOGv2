@@ -32,11 +32,16 @@ function CreatePost() {
           className="bg-[#252627] text-white w-full h-32 px-4 py-2 rounded-lg focus:outline-none mt-4"
         ></textarea>
 
+        <select name="category" id="" className="bg-[#252627] text-white w-full  px-4 py-2 rounded-lg focus:outline-none mt-4">
+        <option value="">Select a category</option>
+          <option value=""></option>
+        </select>
+
         <div className="flex justify-between items-center mt-4">
           <button className="text-gray-300 text-sm">➕ community tag</button>
           <Link href="/">
             <button className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg text-white">
-              Next
+              Post
             </button>
           </Link>
         </div>
@@ -45,4 +50,4 @@ function CreatePost() {
   );
 }
 
-export { CreatePost };
+export default CreatePost ;

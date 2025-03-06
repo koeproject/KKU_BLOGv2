@@ -12,8 +12,8 @@ function Navbar() {
           KKU-BLOG
         </Link>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-6">
+      
+       {/* <div className="hidden md:flex space-x-6">
           <Link href="/post" className="text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white transition">
             📄 Post
           </Link>
@@ -21,9 +21,23 @@ function Navbar() {
             👤 Profile
           </Link>
         </div>
+        */}
+
+        <div className="hidden md:flex space-x-6">
+          <Link href="/signup" className="text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white transition">
+            Sign up
+          </Link>
+          <Link href="/login" className="text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white transition">
+            Login
+          </Link>
+        </div>
+
+
+
+
       </div>
     </nav>
   );
 }
 
-export { Navbar };
+export default Navbar;
