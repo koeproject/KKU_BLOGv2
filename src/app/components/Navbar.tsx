@@ -1,10 +1,12 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 function Navbar() {
-
+const { data: session, status } = useSession()
   return (
+    status === 'authenticated' && session.user ? (
     <nav className="bg-white dark:bg-[#131414] fixed w-full z-20 top-0 border-b border-gray-200 dark:border-gray-600">
       <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
         {/* Logo */}
@@ -13,31 +15,58 @@ function Navbar() {
         </Link>
 
       
-       {/* <div className="hidden md:flex space-x-6">
-          <Link href="/post" className="text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white transition">
-            📄 Post
-          </Link>
-          <Link href="/profile" className="text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white transition">
-            👤 Profile
-          </Link>
-        </div>
-        */}
-
         <div className="hidden md:flex space-x-6">
-          <Link href="/signup" className="text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white transition">
-            Sign up
-          </Link>
-          <Link href="/login" className="text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white transition">
-            Login
+          
+          <Link href="/profile" className="text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white transition">
+            Profile
           </Link>
         </div>
+        
 
+      
 
 
 
       </div>
     </nav>
-  );
+  ) : 
+  
+  <nav className="bg-white dark:bg-[#131414] fixed w-full z-20 top-0 border-b border-gray-200 dark:border-gray-600">
+  <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
+    {/* Logo */}
+    <Link href="/" className="text-2xl font-semibold whitespace-nowrap dark:text-white">
+      KKU-BLOG
+    </Link>
+
+  
+   {/* <div className="hidden md:flex space-x-6">
+      <Link href="/post" className="text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white transition">
+        📄 Post
+      </Link>
+      <Link href="/profile" className="text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white transition">
+        👤 Profile
+      </Link>
+    </div>
+    */}
+
+    <div className="hidden md:flex space-x-6">
+      <Link href="/signup" className="text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white transition">
+        Sign up
+      </Link>
+      <Link href="/login" className="text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white transition">
+        Login
+      </Link>
+    </div>
+
+
+
+
+  </div>
+</nav>
+)
+
+
+
 }
 
 export default Navbar;

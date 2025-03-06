@@ -23,7 +23,7 @@ model User {
   email          String   @unique
   passwordHash   String
   bio            String?  
-  profilePicture String?
+  profilePicture String  @default("https://nbbje4zkz5.ufs.sh/f/bo1eRRCzWFevhWXEyIrQF41MZOTIAzkq7wfaXJj6G8csR2Vn?fbclid=IwY2xjawIzoxNleHRuA2FlbQIxMAABHb3r2eZCm9u1nliLvqVogtNQticxBCRi-aUECDUe6w1x9sxI3qZ6VdMCSw_aem_oUMGTAVHsnGUGRxA7ncwGg")
   contact        String?  @db.Char(10)
   role      String   @default("member")
   createdAt      DateTime @default(now())

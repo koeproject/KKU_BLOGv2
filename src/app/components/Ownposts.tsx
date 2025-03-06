@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation"; // ✅ Use `useRouter`
 import { Post } from "@prisma/client";
 
 export default function PostList() {
+
   const [posts, setPosts] = useState<Post[]>([]);
   const router = useRouter(); // ✅ Initialize router inside the component
 
@@ -38,15 +39,13 @@ export default function PostList() {
               className="bg-[#252627] rounded-lg overflow-hidden shadow-lg cursor-pointer"
               onClick={() => router.push(`/post/${post.id}`)} // ✅ Navigation now works
             >
-              {post.image ? (
-                <Image
-                  src={post.image}
-                  alt={post.title}
-                  width={400}
-                  height={200}
-                  className="w-full h-40 object-cover"
-                />
-              ) : null}
+              <Image
+                src={post.image}
+                alt={post.title}
+                width={400}
+                height={200}
+                className="w-full h-40 object-cover"
+              />
               <div className="p-4">
                 <h3 className="text-lg font-semibold text-white mb-2">
                   {post.title}
@@ -55,9 +54,7 @@ export default function PostList() {
               <div className="p-4 border-t border-gray-700 flex justify-between items-center">
                 <div className="flex items-center space-x-2">
                   <span className="text-gray-400 text-xs">{post.like}</span>
-                  <button className="text-gray-400 hover:text-red-500">
-                    ❤️
-                  </button>
+                  <button className="text-gray-400 hover:text-red-500">❤️</button>
                 </div>
               </div>
             </div>

@@ -26,13 +26,13 @@ export const authOptions = {
         ) {
           return {
             id: user.id.toString(),
-            name: user.username,
-            email: user.email,
-            role: user.role,
-            bio: user.bio,
-            profilePicture: user.profilePicture,
-            contact: user.contact
-            
+      name: user.username,
+      username: user.username ?? undefined,
+      email: user.email,
+      role: user.role,
+      bio: user.bio ?? undefined, // Convert null to undefined
+      profilePicture: user.profilePicture ?? undefined,
+      contact: user.contact ?? undefined,
           }
         } else {
           throw new Error('Invalid email or password')
