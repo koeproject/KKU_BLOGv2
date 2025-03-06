@@ -44,7 +44,7 @@ interface Post {
   status: string;
 }
 
-interface Category {
+interface Categories {
   id: number;
   name: string;
   image: string;

@@ -1,12 +1,13 @@
 
 "use client"
+import { Category } from "@prisma/client";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
 
 function Categories() {
 
-  const [Categories, setCategories] = useState<Categories[]>([]);
+  const [Categories, setCategories] = useState<Category[]>([]);
 
 
   useEffect(() => {
@@ -38,8 +39,8 @@ function Categories() {
         </div>
         {/* Category Grid */}
         <div className="grid grid-cols-4 md:grid-cols-6 gap-6">
-          {Categories.map((category, index) => (
-            <div key={index} className="flex flex-col items-center space-y-2">
+          {Categories.map((category) => (
+            <div key={category.id} className="flex flex-col items-center space-y-2">
               <div className="w-16 h-16 flex items-center justify-center rounded-full bg-[#131414] text-2xl">
                 {category.image}
               </div>
