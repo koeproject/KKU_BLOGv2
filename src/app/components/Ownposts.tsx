@@ -6,8 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // ✅ Use `useRouter`
 import { Post } from "@prisma/client";
 
-export default function PostList() {
-
+export default function Ownposts() {
   const [posts, setPosts] = useState<Post[]>([]);
   const router = useRouter(); // ✅ Initialize router inside the component
 
@@ -31,7 +30,7 @@ export default function PostList() {
   return (
     <div className="bg-[#1f2021] min-h-screen py-10 px-6">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl font-semibold text-white mb-6">ข่าวล่าสุด</h2>
+        <h2 className="text-3xl font-semibold text-white mb-6">โพสต์ของคุณ</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {posts.map((post) => (
             <div
@@ -39,13 +38,15 @@ export default function PostList() {
               className="bg-[#252627] rounded-lg overflow-hidden shadow-lg cursor-pointer"
               onClick={() => router.push(`/post/${post.id}`)} // ✅ Navigation now works
             >
-              <Image
-                src={post.image}
-                alt={post.title}
-                width={400}
-                height={200}
-                className="w-full h-40 object-cover"
-              />
+              {post.image ? (
+                <Image
+                  src={post.image}
+                  alt={post.title}
+                  width={400}
+                  height={200}
+                  className="w-full h-40 object-cover"
+                />
+              ) : null}
               <div className="p-4">
                 <h3 className="text-lg font-semibold text-white mb-2">
                   {post.title}
@@ -54,7 +55,9 @@ export default function PostList() {
               <div className="p-4 border-t border-gray-700 flex justify-between items-center">
                 <div className="flex items-center space-x-2">
                   <span className="text-gray-400 text-xs">{post.like}</span>
-                  <button className="text-gray-400 hover:text-red-500">❤️</button>
+                  <button className="text-gray-400 hover:text-red-500">
+                    ❤️
+                  </button>
                 </div>
               </div>
             </div>

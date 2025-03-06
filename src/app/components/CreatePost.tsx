@@ -2,30 +2,51 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { UploadButton } from "@/utils/uploadthing";
+
 
 function CreatePost() {
+   const { data: session, status } = useSession()
+
+  
   return (
+    status === 'authenticated' &&
+      session.user && session.user.profilePicture &&(
     <div className="min-h-screen bg-[#131414] text-white p-6 flex flex-col items-center justify-center">
       <div className="bg-[#1f2021] p-6 rounded-lg shadow-lg w-full max-w-lg">
         <h2 className="text-xl font-semibold mb-4 text-center">Create Post</h2>
 
         <div className="flex items-center space-x-3 mb-4">
           <Image
-            src="/images/profile.jpg"
+            src={session.user.profilePicture}
             alt="Profile"
             width={40}
             height={40}
             className="w-10 h-10 rounded-full border border-gray-700"
           />
           <div>
-            <p className="font-semibold">Profile Name</p>
-            <p className="text-gray-400 text-sm">📍 role</p>
+            <p className="font-semibold">{session.user.username}</p>
+            <p className="text-gray-400 text-sm"></p>
           </div>
         </div>
 
-        <div className="bg-[#252627] p-4 rounded-lg text-center text-gray-400 cursor-pointer hover:bg-[#303233]">
-          📷 add topic picture
-        </div>
+      
+      <UploadButton
+        endpoint="imageUploader"
+        onClientUploadComplete={(res) => {
+          // Do something with the response
+          console.log("Files: ", res);
+          alert("Upload Completed");
+        }}
+        onUploadError={(error: Error) => {
+          // Do something with the error.
+          alert(`ERROR! ${error.message}`);
+        }}
+      />
+   
 
         <textarea
           placeholder="tell your story..."
@@ -47,7 +68,8 @@ function CreatePost() {
         </div>
       </div>
     </div>
-  );
+    )
+  )
 }
 
 export default CreatePost ;
