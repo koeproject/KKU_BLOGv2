@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { UploadButton } from "@/utils/uploadthing";
+import { UploadButton, UploadDropzone } from "@/utils/uploadthing";
 
 
 function CreatePost() {
@@ -16,7 +16,7 @@ function CreatePost() {
     status === 'authenticated' &&
       session.user && session.user.profilePicture &&(
     <div className="min-h-screen bg-[#131414] text-white p-6 flex flex-col items-center justify-center">
-      <div className="bg-[#1f2021] p-6 rounded-lg shadow-lg w-full max-w-lg">
+      <div className="bg-[#1f2021] p-6 rounded-lg shadow-lg w-full max-w-lg mt-16">
         <h2 className="text-xl font-semibold mb-4 text-center">Create Post</h2>
 
         <div className="flex items-center space-x-3 mb-4">
@@ -34,7 +34,7 @@ function CreatePost() {
         </div>
 
       
-      <UploadButton
+        <UploadDropzone
         endpoint="imageUploader"
         onClientUploadComplete={(res) => {
           // Do something with the response
@@ -58,8 +58,8 @@ function CreatePost() {
           <option value=""></option>
         </select>
 
-        <div className="flex justify-between items-center mt-4">
-          <button className="text-gray-300 text-sm">➕ community tag</button>
+        <div className="flex justify-end items-center mt-4">
+          {/*<button className="text-gray-300 text-sm">➕ community tag</button>*/}
           <Link href="/">
             <button className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg text-white">
               Post

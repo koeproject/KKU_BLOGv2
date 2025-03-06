@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import PostList from "./PostList";
+
 import Ownposts from "./Ownposts";
 
 function Profile() {
@@ -26,9 +26,7 @@ const { data: session, status } = useSession()
                           />
                         ) : null}
           
-          <div className="absolute bottom-0 right-0 bg-blue-600 p-1 rounded-full cursor-pointer">
-            ✏️
-          </div>
+          
         </div>
         <h2 className="mt-4 text-2xl font-semibold">{session.user.username}</h2>
         <p> Role : {session.user.role}</p>

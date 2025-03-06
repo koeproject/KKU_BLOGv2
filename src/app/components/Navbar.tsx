@@ -20,6 +20,7 @@ const { data: session, status } = useSession()
           <Link href="/profile" className="text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white transition">
             Profile
           </Link>
+          
         </div>
         
 

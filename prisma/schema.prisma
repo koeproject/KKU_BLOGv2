@@ -16,29 +16,27 @@ datasource db {
 }
         
 
-
 model User {
   id             Int      @id @default(autoincrement())
   username       String   @unique
   email          String   @unique
   passwordHash   String
   bio            String?  
-  profilePicture String  @default("https://nbbje4zkz5.ufs.sh/f/bo1eRRCzWFevhWXEyIrQF41MZOTIAzkq7wfaXJj6G8csR2Vn?fbclid=IwY2xjawIzoxNleHRuA2FlbQIxMAABHb3r2eZCm9u1nliLvqVogtNQticxBCRi-aUECDUe6w1x9sxI3qZ6VdMCSw_aem_oUMGTAVHsnGUGRxA7ncwGg")
+  profilePicture String?  @default("https://nbbje4zkz5.ufs.sh/f/bo1eRRCzWFevhWXEyIrQF41MZOTIAzkq7wfaXJj6G8csR2Vn?fbclid=IwY2xjawIzoxNleHRuA2FlbQIxMAABHb3r2eZCm9u1nliLvqVogtNQticxBCRi-aUECDUe6w1x9sxI3qZ6VdMCSw_aem_oUMGTAVHsnGUGRxA7ncwGg")
   contact        String?  @db.Char(10)
-  role      String   @default("member")
   createdAt      DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt      DateTime @updatedAt
+  role           String   @default("Member") // Admin and User
+
   posts    Post[]
   comments Comment[]
 }
 
-
 model Category {
   id          Int      @id @default(autoincrement())
   name        String   @unique
-  image      String?
-  description String? 
-
+  description String?
+  image      String? 
   posts Post[]
 }
 
@@ -51,13 +49,14 @@ model Post {
   updatedAt  DateTime @updatedAt
   userId     Int
   categoryId Int?
-  like       Int @default(0) // เพิ่ม
-  status     Boolean @default(false) // ไม่อนุมัติ
+  like       Int      @default(0)
+  status     String   @default("Draft") // Draft and Published
+  //view       Int    @default(0)
 
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category   Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   comments   Comment[]
-  //tags       Tag[]    @relation("PostTags", references: [id])
+  //tags       Tag[]    @relation("PostTags", references: [id]) 
   tags  PostTags[]
 }
 
@@ -67,7 +66,7 @@ model Comment {
   createdAt DateTime @default(now())
   postId    Int
   userId    Int
-  like       Int @default(0) // เพิ่ม
+  like      Int      @default(0)
 
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -76,7 +75,7 @@ model Comment {
 model Tag {
   id   Int    @id @default(autoincrement())
   name String @unique
-  used  Int    @default(0)
+  used Int    @default(0)
 
   //posts Post[] @relation("PostTags", references: [id])
   posts  PostTags[]
