@@ -1,9 +1,6 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 import { NextRequest } from 'next/server'
 const prisma = new PrismaClient()
-
-
-
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams
@@ -20,13 +17,13 @@ export async function GET(req: NextRequest) {
         },
         title: {
           contains: search,
-          mode: 'insensitive',
+          mode: 'insensitive' as 'insensitive',
         },
       }
     : {
         title: {
           contains: search,
-          mode: 'insensitive',
+          mode: 'insensitive' as 'insensitive',
         },
       }
 
@@ -37,8 +34,9 @@ export async function GET(req: NextRequest) {
         category: true, // Include category data in the response
       },
       orderBy: {
-        createdAt: sort,
+        createdAt: sort as Prisma.SortOrder,
       },
+      
     })
     return Response.json(posts)
   } catch (error) {

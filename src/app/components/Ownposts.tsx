@@ -4,64 +4,74 @@ import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // ✅ Use `useRouter`
-import { Post } from "@prisma/client";
+import { Post, User } from "@prisma/client";
+import { useSession } from "next-auth/react";
+
+
+
 
 export default function Ownposts() {
+  const { data: session, status } = useSession()
   const [posts, setPosts] = useState<Post[]>([]);
-  const router = useRouter(); // ✅ Initialize router inside the component
 
+  const router = useRouter(); // ✅ Initialize router inside the component
   useEffect(() => {
-    fetchPosts();
+   
+    fetchPosts(); 
   }, []);
 
   const fetchPosts = async () => {
     try {
-      const res = await axios.get("/api/posts");
-      if (Array.isArray(res.data)) {
-        setPosts(res.data);
+      
+      if (session) {
+      const res = await axios.get(`/api/user/${session.user.id}/posts`);
+      if (Array.isArray(res.data.posts)) {
+        setPosts(res.data.posts); // ✅ Correct way to set only the posts array
       } else {
         console.error("Unexpected API response:", res.data);
       }
+      }
+      
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
   };
 
+
+
   return (
-    <div className="bg-[#1f2021] min-h-screen py-10 px-6">
+    <div className="bg-[#1f2021] min-h-screen py-10 px-6 ">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl font-semibold text-white mb-6">โพสต์ของคุณ</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {posts.map((post) => (
-            <div
-              key={post.id}
-              className="bg-[#252627] rounded-lg overflow-hidden shadow-lg cursor-pointer"
-              onClick={() => router.push(`/post/${post.id}`)} // ✅ Navigation now works
-            >
-              {post.image ? (
-                <Image
-                  src={post.image}
-                  alt={post.title}
-                  width={400}
-                  height={200}
-                  className="w-full h-40 object-cover"
-                />
-              ) : null}
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  {post.title}
-                </h3>
-              </div>
-              <div className="p-4 border-t border-gray-700 flex justify-between items-center">
-                <div className="flex items-center space-x-2">
-                  <span className="text-gray-400 text-xs">{post.like}</span>
-                  <button className="text-gray-400 hover:text-red-500">
-                    ❤️
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="overflow-x-auto">
+          <table className=" container bg-[#252627] text-white rounded-lg overflow-hidden">
+            <thead>
+              <tr className="bg-gray-800 text-left ">
+                <th className="p-3">รูปภาพ</th>
+                <th className="p-3">ชื่อโพสต์</th>
+                <th className="p-3">ไลค์</th>
+              </tr>
+            </thead>
+            <tbody>
+              {posts.map((post:any) => (
+                <tr
+                  key={post.id}
+                  className="border-t border-gray-700 hover:bg-gray-700 cursor-pointer"
+                  onClick={() => router.push(`/post/${post.id}`)}
+                >
+                  <td className="p-3">
+                    {post.image ? (
+                      <img src={post.image} alt={post.title} className="w-16 h-16 object-cover rounded" />
+                    ) : (
+                      "ไม่มีรูปภาพ"
+                    )}
+                  </td>
+                  <td className="p-3">{post.title}</td>
+                  <td className="p-3">{post.like}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
