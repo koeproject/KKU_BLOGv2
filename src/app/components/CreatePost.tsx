@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { UploadDropzone } from "@/utils/uploadthing";
+import { UploadDropzone } from "@/app/utils/uploadthing";
 import axios from "axios";
 import { Category } from "@prisma/client";
 

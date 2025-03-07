@@ -6,17 +6,37 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // ✅ Use `useRouter`
 import { Post } from "@prisma/client";
 
-export default function PostList() {
+
+interface PostListProps {
+  categoryParams: string;
+  searchParams: string;
+  sortParams: string;
+}
+
+
+export default function PostList({ categoryParams, searchParams, sortParams}: PostListProps) {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [sort, setSort] = useState(sortParams);
+  const [search, setSearch] = useState(searchParams);
+  const [category, setCategory] = useState(categoryParams);
   const router = useRouter(); // ✅ Initialize router inside the component
-
   useEffect(() => {
-    fetchPosts();
-  }, []);
+    setSearch(searchParams);
+    setSort(sortParams);
+    setCategory(categoryParams);
+    fetchPosts(searchParams, sortParams, categoryParams || ""); // Fetch new posts when params change
+  }, [searchParams, sortParams, categoryParams]);
 
-  const fetchPosts = async () => {
+  const fetchPosts = async (search: string, sort: string, category: string) => {
     try {
-      const res = await axios.get("/api/posts");
+      const query = new URLSearchParams({ 
+        search, 
+        sort, 
+        category,
+      }).toString();
+      
+      const res = await axios.get(`/api/posts?${query}`);
+
       if (Array.isArray(res.data)) {
         setPosts(res.data);
       } else {

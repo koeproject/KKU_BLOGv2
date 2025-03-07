@@ -11,7 +11,7 @@ function Profile() {
   return (
     status === "authenticated" &&
     session.user && (
-      <div className="min-h-screen bg-[#131414] text-white flex flex-col md:flex-row mt-52">
+      <div className=" bg-[#131414] text-white flex flex-col md:flex-row mt-20">
         {/* Sidebar */}
         <aside className="bg-[#1f2021] w-full md:w-1/4 p-6 flex flex-col items-center">
           <div className="relative w-28 h-28">

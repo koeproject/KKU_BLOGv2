@@ -32,18 +32,8 @@ declare module "next-auth" {
   }
 }
 
-// Define other interfaces
-interface Post {
-  id: number;
-  title: string;
-  content: string;
-  image: string;
-  userId: number;
-  categoryId: number;
-  like: number;
-  status: string;
-}
 
+ 
 interface Categories {
   id: number;
   name: string;
@@ -62,3 +52,32 @@ interface Comment {
     username: string;
   };
 }
+
+
+interface PostListProps {
+  categoryParams: string;
+  searchParams: string;
+  sortParams: string;
+}
+
+type Post ={
+  id: number;
+  title: string;
+  content: string;
+  image: string;
+  userId: number;
+  categoryId: number;
+  like: number;
+  status: string;
+  user: {
+    username: string;
+  };
+}
+
+declare module "@prisma/client" {
+  
+}
+
+// Define other interfaces
+
+

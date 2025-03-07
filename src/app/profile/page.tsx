@@ -22,7 +22,7 @@ import Profile from "../components/Profile";
       status === 'authenticated' &&
       session.user && (
 
-        <div className="flex h-screen items-center justify-center pt-36">
+        <div className="flex  items-center justify-center">
   
         <Navbar />
         <div className="h-12"></div>
