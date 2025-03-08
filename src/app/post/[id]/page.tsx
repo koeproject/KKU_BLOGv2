@@ -54,7 +54,7 @@ export default function PostPage({ params }: { params: { id: string } }) {
         <span>❤️ {post.like} ถูกใจ</span>
         
       </div>
-      <Comments postId={params.id} />  
+      <Comments commentPostId={params.id} />  
     </div>
     </div>
   );

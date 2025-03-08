@@ -23,7 +23,7 @@ const Login = () => {
       if (result && result.error) {
         console.error(result.error)
       } else {
-        router.push('/profile')
+        router.push('/')
       }
     } catch (error) {
       console.log('error', error)

@@ -1,3 +1,4 @@
+import { Type } from "lucide";
 import NextAuth from "next-auth";
 
 // Extend NextAuth types
@@ -30,18 +31,19 @@ declare module "next-auth" {
     id: string;
     role: string;
   }
+  
 }
 
 
  
-interface Categories {
+export type CategoryType = {
   id: number;
   name: string;
   image: string;
   description: string;
 }
 
-interface Comment {
+export type CommentType ={
   id: number;
   content: string;
   createdAt: string;
@@ -50,17 +52,14 @@ interface Comment {
   like: number;
   user: {
     username: string;
+    profilePicture: string;
   };
 }
 
 
-interface PostListProps {
-  categoryParams: string;
-  searchParams: string;
-  sortParams: string;
-}
 
-type Post ={
+
+export type PostType ={
   id: number;
   title: string;
   content: string;
@@ -73,6 +72,9 @@ type Post ={
     username: string;
   };
 }
+
+
+
 
 declare module "@prisma/client" {
   

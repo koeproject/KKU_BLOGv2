@@ -1,67 +1,77 @@
-import { PrismaClient, Prisma } from '@prisma/client'
-import { NextRequest } from 'next/server'
-const prisma = new PrismaClient()
+import { PrismaClient, Prisma } from '@prisma/client';
+import { NextRequest } from 'next/server';
+
+const prisma = new PrismaClient();
 
 export async function GET(req: NextRequest) {
-  const searchParams = req.nextUrl.searchParams
-  const category = searchParams.get('category')
-  const search = searchParams.get('search') || ''
-  const sort = searchParams.get('sort') || 'desc'
+  const searchParams = req.nextUrl.searchParams;
+  const category = searchParams.get('category');
+  const search = searchParams.get('search') || '';
+  const sort = searchParams.get('sort') || 'desc';
+  const status = searchParams.get('status');
 
-  const whereCondition = category
-    ? {
-        category: {
-          is: {
-            name: category,
-          },
+  let whereCondition: Prisma.PostWhereInput = {
+    title: {
+      contains: search,
+      mode: 'insensitive',
+    },
+  };
+
+  if (category) {
+    whereCondition = {
+      ...whereCondition,
+      category: {
+        is: {
+          name: category,
         },
-        title: {
-          contains: search,
-          mode: 'insensitive' as 'insensitive',
-        },
-      }
-    : {
-        title: {
-          contains: search,
-          mode: 'insensitive' as 'insensitive',
-        },
-      }
+      },
+    };
+  }
+
+  if (status) {
+    whereCondition = {
+      ...whereCondition,
+      status: status, // Assuming status is a field directly on Post
+    };
+  }
 
   try {
     const posts = await prisma.post.findMany({
       where: whereCondition,
       include: {
-        category: true, // Include category data in the response
+        category: true,
       },
       orderBy: {
         createdAt: sort as Prisma.SortOrder,
       },
-      
-    })
-    return Response.json(posts)
+    });
+    return Response.json(posts);
   } catch (error) {
-    return new Response(error as BodyInit, {
+    return new Response(JSON.stringify(error), {
       status: 500,
-    })
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }
 }
 
-export async function POST(request:Request) {
+export async function POST(request: Request) {
   try {
-    const { title,image,content,userId,categoryId } = await request.json()
+    const { title, image, content, userId, categoryId } = await request.json();
 
-    const user = await prisma.post.create({
+    const post = await prisma.post.create({
       data: {
         title,
         image,
         content,
         userId,
-        categoryId
+        categoryId,
       },
-    })
-    return Response.json({ message: 'Post created', user })
+    });
+    return Response.json({ message: 'Post created', post });
   } catch (error) {
-    return Response.json({ error: 'error' })
+    console.error("Error creating post:", error);
+    return Response.json({ error: 'Failed to create post' }, { status: 500 });
   }
 }
-

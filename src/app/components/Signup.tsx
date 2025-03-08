@@ -19,7 +19,7 @@ const Signup = () => {
     } else {
     try {
         await axios.post('/api/auth/signup', { email, password, username })
-        router.push('/')
+        router.push('/login')
       } catch (error) {
       console.log('error', error)
     }

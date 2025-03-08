@@ -4,9 +4,10 @@ import  Navbar  from "@/app/components/Navbar";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import Profile from "../components/Profile";
+import Profile from "../../components/Profile";
+import EditProfile from "@/app/components/EditProfile";
 
-  export default function ProfilePage() {
+  export default function ProfileEdit() {
 
     
     const { data: session, status } = useSession()
@@ -22,12 +23,12 @@ import Profile from "../components/Profile";
       status === 'authenticated' &&
       session.user && (
 
-        <div className="flex items-center  bg-[#131414]">
+        <div className="">
         <Navbar />
-        <div className="h-12"></div>
-        <Profile />
-      
+        <div className="flex justify-self-center"><EditProfile /></div>
         </div>
+        
+        
         
       )
     );

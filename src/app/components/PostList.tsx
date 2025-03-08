@@ -11,28 +11,25 @@ interface PostListProps {
   categoryParams: string;
   searchParams: string;
   sortParams: string;
+  statusParams: string;
 }
 
 
-export default function PostList({ categoryParams, searchParams, sortParams}: PostListProps) {
+export default function PostList({ categoryParams, searchParams, sortParams ,statusParams}: PostListProps) {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [sort, setSort] = useState(sortParams);
-  const [search, setSearch] = useState(searchParams);
-  const [category, setCategory] = useState(categoryParams);
   const router = useRouter(); // ✅ Initialize router inside the component
   useEffect(() => {
-    setSearch(searchParams);
-    setSort(sortParams);
-    setCategory(categoryParams);
-    fetchPosts(searchParams, sortParams, categoryParams || ""); // Fetch new posts when params change
+    
+    fetchPosts(searchParams, sortParams, categoryParams,statusParams || ""); // Fetch new posts when params change
   }, [searchParams, sortParams, categoryParams]);
 
-  const fetchPosts = async (search: string, sort: string, category: string) => {
+  const fetchPosts = async (search: string, sort: string, category: string,status: string) => {
     try {
       const query = new URLSearchParams({ 
         search, 
         sort, 
         category,
+        status,
       }).toString();
       
       const res = await axios.get(`/api/posts?${query}`);

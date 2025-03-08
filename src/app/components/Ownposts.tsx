@@ -66,7 +66,7 @@ export default function Ownposts() {
                       "ไม่มีรูปภาพ"
                     )}
                   </td>
-                  <td className="p-3">{post.title}</td>
+                  <td className="p-3 max-w-48">{post.title}</td>
                   <td className="p-3">{post.like}</td>
                 </tr>
               ))}

@@ -11,11 +11,12 @@ export default function PostPage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("desc");
+  const [statusQ, setStatusQ] = useState("Published");
   return (
     <div>
       <Navbar />
       <Categories setCategory={setCategory} />
-      <PostList sortParams={sort} searchParams={search} categoryParams={category} />
+      <PostList sortParams={sort} searchParams={search} categoryParams={category} statusParams={statusQ} />
 
 {session && (
  <div className="fixed bottom-10 right-3 z-20 flex flex-col gap-4">
@@ -24,11 +25,12 @@ export default function PostPage() {
      เขียนโพสต์
    </button>
  </Link>
- <Link href="/create-post">
+ {session && session.user.role == "Admin" && (
+ <Link href="/admin">
    <button className="bg-[#A73B24] hover:bg-[#cc5a40] px-6 py-3 rounded-full shadow-lg text-white text-lg font-semibold">
      ยืนยันโพสต์
    </button>
- </Link>
+ </Link>)}
 </div>
 
 )}
