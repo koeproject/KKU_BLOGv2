@@ -51,10 +51,21 @@ export default function DraftPost({ categoryParams, searchParams, sortParams, st
     }
   };
 
+  const deletePost = async (postId: string) => {
+    try {
+      if (confirm("คุณแน่ใจหรือไม่ว่าต้องการลบโพสต์นี้?")) {
+        await axios.delete(`/api/posts/${postId}`);
+        fetchPosts();
+      }
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
   if (!session || session?.user?.role !== "Admin") return null;
 
   return (
-    <div className="bg-[#1f2021] min-h-screen py-10 px-6">
+    <div className="bg-[#1f2021] min-h-screen py-10 px-6 pt-20">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl font-semibold text-white mb-6">โพสต์ที่รอยืนยัน</h2>
         <div className="overflow-x-auto">
@@ -88,12 +99,18 @@ export default function DraftPost({ categoryParams, searchParams, sortParams, st
                     {post.title}
                   </td>
                   <td className="p-3">{post.like}</td>
-                  <td className="p-3">
+                  <td className="p-3 flex gap-2">
                     <button
                       className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
                       onClick={() => approvePost(String(post.id))}
                     >
                       อนุมัติ
+                    </button>
+                    <button
+                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                      onClick={() => deletePost(String(post.id))}
+                    >
+                      ลบ
                     </button>
                   </td>
                 </tr>

@@ -40,6 +40,7 @@ export async function GET(req: NextRequest) {
       where: whereCondition,
       include: {
         category: true,
+        user: true ,
       },
       orderBy: {
         createdAt: sort as Prisma.SortOrder,
@@ -55,11 +56,37 @@ export async function GET(req: NextRequest) {
     });
   }
 }
-
 export async function POST(request: Request) {
   try {
-    const { title, image, content, userId, categoryId } = await request.json();
+    const { title, image, content, userId, categoryId, tags } = await request.json();
 
+    // ตรวจสอบและสร้าง/อัปเดตแท็ก
+    const tagConnections = await Promise.all(
+      tags.map(async (tag: string) => {
+        const existingTag = await prisma.tag.findUnique({
+          where: { name: tag },
+        });
+
+        if (existingTag) {
+          // ถ้ามีแท็กอยู่แล้ว ให้เพิ่มค่า used
+          await prisma.tag.update({
+            where: { name: tag },
+            data: { used: existingTag.used + 1 },
+          });
+
+          return { tagId: existingTag.id };
+        } else {
+          // ถ้าแท็กไม่มี ให้สร้างใหม่
+          const newTag = await prisma.tag.create({
+            data: { name: tag, used: 1 },
+          });
+
+          return { tagId: newTag.id };
+        }
+      })
+    );
+
+    // สร้างโพสต์และเชื่อมแท็ก
     const post = await prisma.post.create({
       data: {
         title,
@@ -67,11 +94,18 @@ export async function POST(request: Request) {
         content,
         userId,
         categoryId,
+        tags: {
+          create: tagConnections.map(({ tagId }) => ({
+            tag: { connect: { id: tagId } },
+          })),
+        },
       },
+      include: { tags: { include: { tag: true } } },
     });
-    return Response.json({ message: 'Post created', post });
+
+    return Response.json({ message: "Post created", post });
   } catch (error) {
     console.error("Error creating post:", error);
-    return Response.json({ error: 'Failed to create post' }, { status: 500 });
+    return Response.json({ error: "Failed to create post" }, { status: 500 });
   }
 }

@@ -18,6 +18,14 @@ export default function CreatePost() {
   const [userId, setUserId] = useState<number | undefined>(undefined);
   const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [tags, setTags] = useState<string[]>([]); // State เก็บ tags
+
+  // ฟังก์ชันแยกแท็กจากข้อความ
+  const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputText = e.target.value;
+    const extractedTags = inputText.match(/#\w+/g) || []; // หา tags ที่ขึ้นต้นด้วย #
+    setTags(extractedTags.map((tag) => tag.replace("#", ""))); // ลบ # ออกก่อนบันทึก
+  };
 
   useEffect(() => {
     if (session?.user?.id) {
@@ -42,12 +50,13 @@ export default function CreatePost() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await axios.post("/api/posts", { title, image, content, userId, categoryId });
+      await axios.post("/api/posts", { title, image, content, userId, categoryId, tags });
       router.push("/");
     } catch (error) {
       console.error("Error submitting post:", error);
     }
   };
+  
 
   if (status !== "authenticated" || !session?.user) return null;
 
@@ -55,7 +64,9 @@ export default function CreatePost() {
     <form onSubmit={handleSubmit}>
       <div className="min-h-screen bg-[#131414] text-white p-6 flex flex-col items-center justify-center">
         <div className="bg-[#1f2021] p-6 rounded-lg shadow-lg w-full max-w-lg mt-16">
-          <h2 className="text-xl font-semibold mb-4 text-center">Create Post</h2>
+          <h2 className="text-xl font-semibold mb-4 text-center">
+            Create Post
+          </h2>
 
           <div className="flex items-center space-x-3 mb-4">
             {session.user.profilePicture && (
@@ -82,7 +93,13 @@ export default function CreatePost() {
 
           {image ? (
             <div className="relative w-full mt-4">
-              <Image src={image} alt="Uploaded" width={400} height={400} className="w-full object-cover rounded-lg" />
+              <Image
+                src={image}
+                alt="Uploaded"
+                width={400}
+                height={400}
+                className="w-full object-cover rounded-lg"
+              />
               <button
                 type="button"
                 onClick={() => setImage("")}
@@ -113,7 +130,12 @@ export default function CreatePost() {
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
-
+          <input
+            type="text"
+            placeholder="เพิ่มแท็ก เช่น #love #science"
+            className="bg-[#252627] text-white w-full px-4 py-2 rounded-lg focus:outline-none mt-4"
+            onChange={handleTagChange}
+          />
           <select
             className="bg-[#252627] text-white w-full px-4 py-2 rounded-lg focus:outline-none mt-4"
             value={categoryId ?? ""}
@@ -128,7 +150,10 @@ export default function CreatePost() {
           </select>
 
           <div className="flex justify-end items-center mt-4">
-            <button type="submit" className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg text-white">
+            <button
+              type="submit"
+              className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg text-white"
+            >
               Post
             </button>
           </div>

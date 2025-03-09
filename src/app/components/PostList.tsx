@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // ✅ Use `useRouter`
 import { Post } from "@prisma/client";
+import { PostType } from "../utils/types";
 
 
 interface PostListProps {
@@ -16,7 +17,7 @@ interface PostListProps {
 
 
 export default function PostList({ categoryParams, searchParams, sortParams ,statusParams}: PostListProps) {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<PostType[]>([]);
   const router = useRouter(); // ✅ Initialize router inside the component
   useEffect(() => {
     
@@ -70,12 +71,8 @@ export default function PostList({ categoryParams, searchParams, sortParams ,sta
                 </h3>
               </div>
               <div className="p-4 border-t border-gray-700 flex justify-between items-center">
-                <div className="flex items-center space-x-2">
-                  <span className="text-gray-400 text-xs">{post.like}</span>
-                  <button className="text-gray-400 hover:text-red-500">
-                    ❤️
-                  </button>
-                </div>
+                <p className="text-gray-400 text-xs">By: {post.user.username}</p>
+                  <p className="text-gray-400 text-xs justify-self-end">{post.like}❤️</p>
               </div>
             </div>
           ))}

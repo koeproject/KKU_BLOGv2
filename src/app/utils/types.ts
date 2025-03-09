@@ -71,6 +71,13 @@ export type PostType ={
   user: {
     username: string;
   };
+  tags: TagType[];
+}
+
+export type TagType ={
+  id:   Number
+  name: String
+  used: Number
 }
 
 
