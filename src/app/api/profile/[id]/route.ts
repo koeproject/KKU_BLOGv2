@@ -4,9 +4,11 @@ const prisma = new PrismaClient()
 
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
+  const { id } = await params;
+    const userId = Number(id);
     try {
       const user = await prisma.user.findUnique({
-        where: { id: Number(params.id) }
+        where: { id: userId }
       });
   
       return Response.json(user);
@@ -18,10 +20,13 @@ export async function GET(request: Request, { params }: { params: { id: string }
   }
 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
+  const { id } = await params;
+    const userId = Number(id);
+  
   try {
     const { username,email,bio,profilePicture,contact} = await request.json()
     const user = await prisma.user.update({
-      where: { id: Number(params.id) },
+      where: { id: userId },
       data: {
         username,
         email,

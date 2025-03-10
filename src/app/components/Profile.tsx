@@ -55,19 +55,25 @@ function Profile() {
           <p className="mt-2 text-gray-400">Role: {user.role}</p>
           <p className="mt-1 text-gray-400">Bio: {user.bio}</p>
           <p className="mt-1 text-gray-400">Contact: {user.contact}</p>
-            
-          <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded mt-5 transition-all">
+            <div className="flex flex-col w-1/2 gap-5 mt-5">
+          <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded  transition-all">
           <Link href={`/profile/edit`}>
             Edit Profile
+            </Link>
+          </button>
+          <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded  transition-all">
+          <Link href={`/profile/edit/password`}>
+            Change password
             </Link>
           </button>
           
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
-            className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded mt-3 transition-all"
+            className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded  transition-all"
           >
             Logout
           </button>
+          </div>
         </div>
 
         {/* Posts Section */}

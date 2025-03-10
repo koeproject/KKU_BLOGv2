@@ -4,7 +4,8 @@ const prisma = new PrismaClient();
 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
   try {
-    const postId = await Number(params.id);
+    const { id } = await params;
+    const postId = Number(id);
     const { status } = await request.json()
     if (isNaN(postId)) {
       return new Response(JSON.stringify({ error: 'Invalid post ID' }), { status: 400 });

@@ -16,9 +16,7 @@ export async function GET(
     })
     return Response.json(user)
   } catch (error) {
-    return new Response(error as BodyInit, {
-      status: 500,
-    })
+    return Response.json({ error: "Failed to get user" })
   }
 }
 
@@ -36,15 +34,10 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       data: { username, bio, profilePicture, contact },
     });
 
-    return new Response(JSON.stringify(updatedUser), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
-  } catch (error) {
-    console.error("Error updating user:", error);
-    return new Response(JSON.stringify({ error: "Failed to update user" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return Response.json(updatedUser)
+      
+    }
+   catch (error) {
+   return Response.json({ error: "Failed to update user" })
   }
 }

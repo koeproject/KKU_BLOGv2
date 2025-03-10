@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
-    const { id } = await params; // ✅ Await params before accessing
+    const { id } = await params;
 
     const post = await prisma.post.findUnique({
       where: { id: Number(id) },
