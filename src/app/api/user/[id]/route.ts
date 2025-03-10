@@ -20,7 +20,7 @@ export async function GET(
   }
 }
 
-
+// เพิ่ม put
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
   try {
     const { id } = params;

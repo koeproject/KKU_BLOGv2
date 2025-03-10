@@ -45,8 +45,8 @@ export default function EditProfile() {
     e.preventDefault();
     try {
       if (!session?.user.id) return;
-
-      await axios.post(`/api/user/${session.user.id}`, {
+      // ปรับ post เป็น put
+      await axios.put(`/api/user/${session.user.id}`, {
         username,
         bio,
         profilePicture,
